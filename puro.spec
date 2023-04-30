@@ -1,3 +1,5 @@
+%global debug_package %{nil}
+%define _build_id_links none
 %define __os_install_post %{nil}
 
 Name:           puro
@@ -8,19 +10,31 @@ Summary:        Puro is a powerful tool for installing and upgrading Flutter ver
 License:        BSD
 URL:            https://puro.dev/
 
-Source0:        https://puro.dev/builds/%{version}/linux-x64/puro
+Source0:        https://github.com/PixelToast/puro/archive/refs/tags/%{version}.zip
 
-ExclusiveArch:  x86_64
+Patch0:         0001-Fix-petitparser-version-to-5.3.0.patch
+
+BuildRequires:  dart
 
 %description
 Puro is a powerful tool for installing and upgrading Flutter versions, it is essential for developers that work on multiple projects or have slower internet.
 
+%prep
+%autosetup -p1
+
+%build
+cd puro
+dart pub get
+dart compile exe bin/puro.dart -o bin/puro "--define=puro_version=%{version}"
+cd ..
+
 %install
 install -dp %{buildroot}%{_bindir}
-install -Dm 0755 %{SOURCE0} %{buildroot}%{_bindir}
+install -Dm 0755 puro/bin/puro %{buildroot}%{_bindir}
 
 
 %files
+%license puro/LICENSE
 %{_bindir}/puro
 
 %changelog
