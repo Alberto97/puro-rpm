@@ -3,7 +3,7 @@
 %define __os_install_post %{nil}
 
 Name:           puro
-Version:        1.2.5
+Version:        1.2.6
 Release:        1%{?dist}
 Summary:        Puro is a powerful tool for installing and upgrading Flutter versions
 
@@ -11,8 +11,6 @@ License:        BSD
 URL:            https://puro.dev/
 
 Source0:        https://github.com/PixelToast/puro/archive/refs/tags/%{version}.zip
-
-Patch0:         0001-Fix-petitparser-version-to-5.3.0.patch
 
 BuildRequires:  dart
 
@@ -38,5 +36,8 @@ install -Dm 0755 puro/bin/puro %{buildroot}%{_bindir}
 %{_bindir}/puro
 
 %changelog
+* Wed May 17 2023 Alberto Pedron <albertop2197@gmail.com> - 1.2.5-2
+- v1.2.6
+
 * Sun Apr 30 2023 Alberto Pedron <albertop2197@gmail.com> - 1.2.5-1
 - Initial release
