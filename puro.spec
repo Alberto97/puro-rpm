@@ -3,7 +3,7 @@
 %define __os_install_post %{nil}
 
 Name:           puro
-Version:        1.3.1
+Version:        1.3.2
 Release:        1%{?dist}
 Summary:        Puro is a powerful tool for installing and upgrading Flutter versions
 
@@ -36,6 +36,9 @@ install -Dm 0755 puro/bin/puro %{buildroot}%{_bindir}
 %{_bindir}/puro
 
 %changelog
+* Wed Jul 19 2023 Alberto Pedron <albertop2197@gmail.com> - 1.3.2-1
+- Update to v1.3.2
+
 * Sat Jun 17 2023 Alberto Pedron <albertop2197@gmail.com> - 1.3.1-1
 - Update Puro
 
