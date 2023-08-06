@@ -1,0 +1,41 @@
+name: Check Puro updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 1 * * *'
+
+env:
+  USER: Github Actions <github-actions@users.noreply.github.com>
+  COMMENT: Update Puro
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "Retrieve latest version"
+        uses: oprypin/find-latest-tag@v1
+        id: version
+        with:
+          repository: pingbird/puro
+          releases-only: true
+
+      - name: "Save latest version"
+        run: echo "LATEST_VERSION=${{ steps.version.outputs.tag }}" >> $GITHUB_ENV
+
+      - name: "Clone repository"
+        uses: actions/checkout@v3
+
+      - name: Bump Puro version in the spec file
+        uses: docker://ghcr.io/alberto97/fedora-rpm-dev:latest
+        with:
+          args: rpmdev-bumpspec -D -u "${{ env.USER }}" -c "${{ env.COMMENT }}" puro.spec -n "${{ env.LATEST_VERSION }}"
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Puro to v${{ env.LATEST_VERSION }}
+          commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          tagging_message: v${{ env.LATEST_VERSION }}-1
